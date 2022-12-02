@@ -1,0 +1,4 @@
+name = "aoc2022"
+uuid = "002d8bbb-489b-432f-8f52-1a086c215b2d"
+authors = ["Nick Elgueta <nve@warwickinvestmentgroup.com>"]
+version = "0.1.0"
