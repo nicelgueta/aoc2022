@@ -1,0 +1,1 @@
+julia --project=. ./src/aoc2022.jl $1
