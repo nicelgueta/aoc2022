@@ -84,4 +84,62 @@ function day2()
     return "$part1\n$part2"
 end
 
+function day3()
+    inp::String = open("day3input.txt") do f
+        read(f, String)
+    end
+    rucksacks = split(inp, "\n")
+    function get_priority(c::Char)
+        ord = Int(c)
+        if ord < 97
+            # is capital
+            to_sub = 38
+        else
+            to_sub = 96
+        end
+        return ord - to_sub
+    end
+    priorities_sum = 0
+    for sack in rucksacks
+        comp1 = sack[1:Int64(length(sack)/2)]
+        comp2 = sack[Int64(length(sack)/2) + 1:end]
+        for c in comp1
+            if c in comp2
+                priorities_sum += get_priority(c)
+                break
+            end
+        end
+    end
+
+    part1 = "Sum priorities: $priorities_sum"
+
+    # part2
+    win_x, win_y = (1,3)
+    badge_pri_sum = 0
+    while win_y <= length(rucksacks)
+        curr_grp = rucksacks[win_x:win_y]
+        curr_map = Dict()
+        for sack in curr_grp
+            dist_sack = Set(sack) # make distinct to find common
+            for item in dist_sack
+                if item in keys(curr_map)
+                    curr_map[item]+=1
+                    if curr_map[item] == 3
+                        badge_pri_sum+=get_priority(item)
+                    end
+                else
+                    curr_map[item] = 1
+                end
+            end
+        end
+        win_x += 3
+        win_y += 3
+    end
+    part2 = "Sum badge priorities: $badge_pri_sum"
+    
+    return "$part1\n$part2"
+
+
+end
+
 end # module

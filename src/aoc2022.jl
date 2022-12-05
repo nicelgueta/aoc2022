@@ -4,7 +4,7 @@ include("easy_days.jl")
 
 using .easy_days
 
-EASY_DAYS = ["day1"]
+EASY_DAYS = ["day1", "day2", "day3"]
 
 function julia_main(args)::Cint
     day::String = args[1]
