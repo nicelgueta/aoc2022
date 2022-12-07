@@ -1,4 +1,4 @@
-module easy_days
+module first_days
 
 function day1()
     inp::String = open("day1input.txt") do f
@@ -137,9 +137,45 @@ function day3()
     end
     part2 = "Sum badge priorities: $badge_pri_sum"
     
+    return "$part1\n$part2"    
+end
+
+function day4()
+    inp::String = open("day4input.txt") do f
+        read(f, String)
+    end
+    lines::Vector{String} = split(inp, "\n")
+    count_encapsulated = 0
+    for line in lines
+        pair1, pair2 = split(line, ",")
+        get_low_hi(pairx) = [parse(Int64, par) for par in split(pairx, "-")]
+        pair1_low, pair1_hi = get_low_hi(pair1)
+        pair2_low, pair2_hi = get_low_hi(pair2)
+
+        if (pair1_low >= pair2_low) & (pair1_hi <= pair2_hi)
+            count_encapsulated += 1
+        elseif (pair2_low >= pair1_low) & (pair2_hi <= pair1_hi)
+            count_encapsulated += 1
+        end
+    end
+    part1 = "1: all encapsulated: $count_encapsulated"
+
+    # overlaps
+    count_overlaps = 0
+    for line in lines
+        pair1, pair2 = split(line, ",")
+        get_low_hi(pairx) = [parse(Int64, par) for par in split(pairx, "-")]
+        pair1_low, pair1_hi = get_low_hi(pair1)
+        pair2_low, pair2_hi = get_low_hi(pair2)
+
+        if (pair2_low <= pair1_low <= pair2_hi) | (pair2_low <= pair1_hi <= pair2_hi)
+            count_overlaps += 1
+        elseif (pair1_low <= pair2_low <= pair1_hi) | (pair1_low <= pair2_hi <= pair1_hi)
+            count_overlaps += 1
+        end
+    end
+    part2 = "2: all overlaps: $count_overlaps"
     return "$part1\n$part2"
-
-
 end
 
 end # module
