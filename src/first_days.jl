@@ -178,4 +178,66 @@ function day4()
     return "$part1\n$part2"
 end
 
+function day5()
+    inp::String = open("day5input.txt") do f
+        read(f, String)
+    end
+    lines::Vector{String} = split(inp, "\n")
+    get_space(x)=""==x
+    input_delim::Int64 = findfirst(get_space, lines)
+    stack_lines = lines[1:input_delim - 2]
+    instructions = lines[input_delim + 1: end]
+    parse_line(l) = [l[i:i+2] for i in range(1,length(l),step=4)]
+    parsed_stacks = [parse_line(l) for l in reverse(stack_lines)]
+
+    # part 1
+    vert_stacks = []
+    for i in range(1, length(parsed_stacks[1]))
+        push!(vert_stacks, [String(s[i]) for s in parsed_stacks if String(s[i]) !== "   "])
+    end
+    for instruction in instructions
+        amount, stack_from, stack_to = match(
+            r"(\d+).*(\d+).*(\d+)", instruction
+        )
+        for i in range(1, parse(Int, amount))
+            try
+                push!(
+                    vert_stacks[parse(Int, stack_to)], 
+                    pop!(
+                        vert_stacks[parse(Int,stack_from)]
+                    )
+                )
+            catch ArgumentError
+                break
+            end
+        end
+    end
+    last_of_stacks = [replace(replace(s[end],"["=>""),"]"=>"") for s in vert_stacks if length(s) > 0]
+    output = join(last_of_stacks,"")
+    part1 = "1: $output"
+
+    # part 2
+    vert_stacks = []
+    for i in range(1, length(parsed_stacks[1]))
+        push!(vert_stacks, [String(s[i]) for s in parsed_stacks if String(s[i]) !== "   "])
+    end
+    for instruction in instructions
+        amount, stack_from, stack_to = match(
+            r"(\d+).*(\d+).*(\d+)", instruction
+        )
+        amount, stack_from, stack_to = parse.(Int64, [amount, stack_from, stack_to])
+        from_stack_length = length(vert_stacks[stack_from])
+        sub_stack_to_move = splice!(vert_stacks[stack_from],from_stack_length+1-amount:from_stack_length)
+        append!(vert_stacks[stack_to], sub_stack_to_move)
+
+
+    end
+    last_of_stacks = [replace(replace(s[end],"["=>""),"]"=>"") for s in vert_stacks if length(s) > 0]
+    output = join(last_of_stacks,"")
+    part2 = "2: $output"
+
+    return "$part1\n$part2"
+
+end
+
 end # module
