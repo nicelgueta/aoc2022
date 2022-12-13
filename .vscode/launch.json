@@ -12,7 +12,7 @@
             "stopOnEntry": false,
             "cwd": "${workspaceFolder}",
             "juliaEnv": "${command:activeJuliaEnvironment}",
-            "args": ["day5"]
+            "args": ["day6"]
         }
     ]
 }

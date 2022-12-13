@@ -240,4 +240,42 @@ function day5()
 
 end
 
+function day6()
+    inp::String = open("day6input.txt") do f
+        read(f, String)
+    end
+    # inp = "mjqjpqmgbljsphdztnvjfqwrcgsmlb"
+    output = day6_parts(inp, 1)
+    output2 = day6_parts(inp, 2)
+    return "1: $output\n2: $output2"
+end
+
+function day6_parts(inp::String, part::Int64)
+    if part == 1
+        stack_length = 3
+    else
+        stack_length = 13
+    end
+    recent_stack = []
+    left = map( x -> only(x), split(inp,""))
+    output = 0
+    i = 1
+    while output == 0
+        nxt = popfirst!(left)
+        if nxt in recent_stack
+            ind = findfirst(x->x==nxt, recent_stack)
+            recent_stack = recent_stack[(ind + 1):end]
+            append!(recent_stack, [nxt])
+        else
+            if length(recent_stack) == stack_length
+                output = i
+                break
+            end
+            push!(recent_stack, nxt)
+        end
+        i+=1
+    end
+    return output    
+end
+
 end # module
